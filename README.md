@@ -1,66 +1,112 @@
-# ISP Inventory
+<div align="center">
 
-A dark-themed inventory management application designed for ISP operations, including fiber and coaxial materials, field teams, and returned customer equipment.
+# ⚡ ISP INVENTORY
 
-> **Current repository version: v1.8.3.** This repository currently distributes the application as a source ZIP, **not** a ready-to-install Windows EXE. Version 1.8.4 is planned but has **not** been uploaded or released here.
+### Fiber • Coax • Equipment • Field Teams
 
-## Download the current version
+**Dark-themed inventory and operations management for Internet Service Providers**
 
-**[ISP-Inventory-v1.8.3.zip](./ISP-Inventory-v1.8.3.zip)**
+![ISP Inventory dashboard concept](docs/images/dashboard-concept.svg)
 
-An older v1.8.2 installer kit and the original v1.0 release candidate are also retained in the repository for reference. For a new installation, start with v1.8.3 rather than the older archives.
+*Illustrative dark UI concept — not an application screenshot. Sample values are fictional.*
 
-## What the application manages
+![Current](https://img.shields.io/badge/Current-v1.8.3-ea3355?style=for-the-badge)
+![Platform](https://img.shields.io/badge/Platform-Windows-222838?style=for-the-badge)
+![Database](https://img.shields.io/badge/Database-SQLite-222838?style=for-the-badge)
+![Stack](https://img.shields.io/badge/Stack-Node.js%20%2B%20Electron-222838?style=for-the-badge)
 
-- ISP material catalog, categories, suppliers and warehouses
-- Fiber and coax stock, quantities and movement history
-- Materials issued to field teams and returned to inventory
-- Customer-returned equipment such as modems, receivers and ONTs
-- Technical sign-offs, repairs, stocktaking and audit history
-- User accounts with role-based access
-- SQLite database and backup/restore workflows
-- Dark-themed interface and configurable branding
+[**Download v1.8.3 Source ZIP**](./ISP-Inventory-v1.8.3.zip) · [**Installer Build PR**](https://github.com/Zero-Shad0w/Inventory/pull/1) · [**Report an Issue**](https://github.com/Zero-Shad0w/Inventory/issues)
 
-Features can vary by ZIP version. See the included documentation and source code for the exact behavior of the version you install.
+</div>
 
-## Windows setup
+---
 
-1. Download the v1.8.3 ZIP above and extract it into a writable folder.
-2. Read the **README**, **QUICK-START**, and any installer/build instructions *inside that ZIP* before running it.
-3. Follow the version-specific startup or installer-building instructions. A source ZIP is **not** a prebuilt EXE.
-4. Before upgrading an existing installation, stop the application and make a separate backup of the entire data directory, including attachments and images.
+## Overview
 
-**Do not overwrite or delete your existing `data/` folder during an upgrade.** Database and backup locations may depend on the installation mode. Verify them before replacing any files.
+ISP Inventory brings warehouse stock, technician allocations, customer equipment returns and operational records into one system. It is designed for ISP workflows involving **fiber optic, coaxial and network equipment**.
 
-## Local and shared-server use
+> **Release status:** v1.8.3 is the latest source ZIP currently published in this repository. v1.8.4 and a prebuilt Windows installer are **not yet published**. This repository's source ZIP should not be mistaken for an installable EXE.
 
-The application uses a Node.js backend and SQLite. For multi-PC use, the shared server should own the database and clients should connect to the server; do not open the same SQLite database file directly from multiple PCs over a network share. Configure ports and firewall rules using the instructions shipped with your exact release. Do not expose the server directly to the public internet.
+## ✨ Core features
 
-## Upcoming: v1.8.4
+| Module | What it helps you manage |
+| :-- | :-- |
+| 📦 **Materials & categories** | Register and organize ISP materials by SKU, model and category |
+| 🏬 **Warehouse inventory** | Review quantities, locations and stock history |
+| 🚐 **Field teams** | Issue stock to teams and track allocated materials |
+| 🔄 **Stock movements** | Record receipts, transfers, consumption and returns |
+| 📡 **Customer equipment** | Track returned modems, ONTs, receivers and related devices |
+| 🛠️ **Operations** | Work orders, repairs and technical sign-offs |
+| 👥 **Users & roles** | Control access by account and permission |
+| 🗄️ **Backups** | Protect SQLite data and associated files |
+| 🎨 **Branding** | Dark interface with configurable company appearance |
 
-The intended next update includes:
+Actual availability and behavior depend on the downloaded release; consult its included documentation.
 
-- Administrator user-management improvements (disable/delete users and reset passwords)
-- Login retry and error-handling fixes
-- Local application port and shared-server connection settings
-- Continued use of the custom `S.ico` branding
-- A Windows installer built through GitHub Actions
+## 🖥️ Interface preview
 
-**Status:** These changes are planned for GitHub publication. Their presence in the existing v1.8.3 archive has not been verified, and no v1.8.4 source package or Windows EXE is currently published here.
+The image above is a **design illustration**, not a capture of the running application. A real dashboard screenshot will be added after the Windows build and UI are verified. This avoids presenting fictional inventory counts or an untested layout as actual software output.
 
-## Windows installer builds
+## 📊 Version comparison
 
-A GitHub Actions workflow is being proposed in [Pull Request #1](https://github.com/Zero-Shad0w/Inventory/pull/1). It requires a v1.8.4 source ZIP with the expected build script before it can successfully create an installer.
+| Capability | v1.8.3 (published) | v1.8.4 (planned publication) |
+| :-- | :--: | :--: |
+| Inventory and materials management | ✅ | ✅ |
+| Team stock allocation and returns | ✅ | ✅ |
+| Local / shared database connection | ✅ | ✅ |
+| Custom red S icon | ✅ | ✅ |
+| Separate connection port controls | Included in v1.8.3 release notes | Planned to retain |
+| Admin disable/delete user and password reset | Not verified | Planned |
+| Improved login retry/error feedback | Not verified | Planned |
+| Automated Windows installer build | Not published | Proposed workflow |
 
-After that prerequisite is met and the workflow is merged, installers will be available from the successful run's **Actions → Artifacts** section. Until then, there is **no verified downloadable v1.8.4 installer**.
+The v1.8.4 column describes **planned GitHub release contents**, not a published or validated installer.
 
-## Data safety and security
+## 🚀 Getting started on Windows
 
-- Keep inventory databases, backups, customer information, credentials, and local configuration secrets **out of GitHub commits**.
-- Keep independent backups before every update; test restoring a backup before relying on it.
-- Change initial/default credentials immediately, if supplied by a particular release.
-- Validate login, user permissions, stock movements and backup/restore in a test environment before production deployment.
+1. **Download** [ISP-Inventory-v1.8.3.zip](./ISP-Inventory-v1.8.3.zip).
+2. **Extract** the ZIP to a writable location.
+3. **Read** the README, quick-start and build instructions inside the extracted package.
+4. **Follow** that version's Windows startup or installer-building steps. The ZIP is editable source/build material, **not** a precompiled EXE.
+5. **Back up your existing data** before upgrading from an earlier version.
 
-## Repository
+### Local vs shared database
 
-This repository preserves older release archives while the source distribution and automated Windows build process are being improved. Contributions and issue reports can be submitted through GitHub.
+| Local mode | Shared mode |
+| :-- | :-- |
+| Database is hosted on the individual PC | A central host serves the shared database |
+| Useful for one-PC installations | Useful for several staff computers |
+| Accounts and inventory stay local | Clients use the same server-side accounts and inventory |
+
+Shared clients connect to the application server over the LAN — **not directly to a SQLite file on a network drive**. Follow the included network setup guide, configure firewall rules carefully and do not expose the service directly to the public internet.
+
+## 🔐 Preserve your inventory data
+
+> [!IMPORTANT]
+> **Never overwrite or delete an existing `data/` directory when upgrading.** Back up the database, evidence, material images and related attachment folders. Confirm the actual data path for your installation and test a restore before production use.
+
+Do not commit customer data, passwords, production databases, backup files or secrets to this public repository.
+
+## 🏗️ Windows EXE build status
+
+[Pull Request #1](https://github.com/Zero-Shad0w/Inventory/pull/1) proposes a GitHub Actions workflow for building a Windows installer. The workflow requires the **v1.8.4 source ZIP** in the repository first. After the prerequisite is met, a successful workflow run can publish the generated EXE under **Actions → Artifacts**.
+
+**No successful Windows installer build is claimed yet.**
+
+## 🧭 Roadmap
+
+- Publish and validate the v1.8.4 source package
+- Test user management, login and port settings on Windows
+- Build and verify the installer using GitHub Actions
+- Add genuine application screenshots from a clean demo database
+- Improve release documentation and versioned changelogs
+
+---
+
+<div align="center">
+
+**Built for ISP warehouse and field operations**
+
+*ISP Inventory • Zero-Shad0w*
+
+</div>
