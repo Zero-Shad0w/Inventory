@@ -1,0 +1,63 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+    paths:
+      - 'ISP-Inventory-v1.8.4/**'
+      - '.github/workflows/windows-exe.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ISP-Inventory-v1.8.4/**'
+      - '.github/workflows/windows-exe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: pwsh
+        working-directory: ISP-Inventory-v1.8.4
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          architecture: x64
+      - name: Run application tests
+        run: npm test
+      - name: Bundle Node runtime
+        run: |
+          New-Item -ItemType Directory -Force runtime | Out-Null
+          Copy-Item -LiteralPath (Get-Command node.exe).Source -Destination runtime/node.exe
+      - name: Install desktop build dependencies
+        working-directory: ISP-Inventory-v1.8.4/desktop
+        run: npm install --no-audit --no-fund
+      - name: Build Windows x64 installer
+        working-directory: ISP-Inventory-v1.8.4/desktop
+        run: npx --no-install electron-builder --win nsis --x64 --publish never
+      - name: Check installer and write checksum
+        run: |
+          $version = (Get-Content desktop/package.json -Raw | ConvertFrom-Json).version
+          $exe = "installer-output/ISP-Inventory-Setup-$version.exe"
+          if (!(Test-Path $exe)) { throw "Installer missing: $exe" }
+          $hash = (Get-FileHash $exe -Algorithm SHA256).Hash.ToLower()
+          "$hash  ISP-Inventory-Setup-$version.exe" | Set-Content installer-output/SHA256SUMS.txt
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ISP-Inventory-Windows-x64-${{ github.run_number }}
+          path: |
+            ISP-Inventory-v1.8.4/installer-output/ISP-Inventory-Setup-*.exe
+            ISP-Inventory-v1.8.4/installer-output/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 90

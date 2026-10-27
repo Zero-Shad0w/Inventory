@@ -1,0 +1,14 @@
+v1.3 Cyberdark UI
+
+The entire interface uses the new deep-dark, futuristic neon style inspired by the approved mockup.
+
+To customize the theme:
+1. Log in as an Administrator.
+2. Open Settings (or the Theme shortcut at top right).
+3. Choose a glow preset or select custom Primary, Secondary, Accent, Button and Background colors.
+4. Adjust Logo size from 32 to 160 pixels, and optionally upload a logo.
+5. Click Save Theme to persist changes in the local SQLite database.
+
+Back up your existing data folder before upgrading. The ZIP includes editable source code and Windows launchers.
+
+Verification: six automated tests and JavaScript syntax checks passed. The Windows UI has not been manually tested on a Windows computer; visual fidelity may vary from the reference mockup.

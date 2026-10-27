@@ -1,0 +1,13 @@
+{
+  "name": "isp-inventory",
+  "version": "1.8.4",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

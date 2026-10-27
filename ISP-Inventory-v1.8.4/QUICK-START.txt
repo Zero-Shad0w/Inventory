@@ -1,0 +1,39 @@
+ISP INVENTORY — QUICK START (WINDOWS)
+=====================================
+1. Install Node.js 22.5 or later from https://nodejs.org/ (Node 22 LTS or newer).
+2. Extract the entire ZIP into a normal writable folder, e.g. C:\ISP-Inventory.
+   Do not run the BAT files directly from inside the ZIP.
+3. Double-click CHECK-SYSTEM.bat to verify Node.js and port configuration.
+4. Optionally double-click CONFIGURE-PORTS.bat to choose backend and frontend ports.
+5. Double-click START-ISP-INVENTORY.bat. Keep the SERVER and FRONTEND windows open.
+6. The browser opens at http://127.0.0.1:3001 by default.
+7. On first use, create an administrator account with a strong password.
+8. Add categories, warehouses, suppliers, teams and materials.
+9. Receive stock through Supplier Receipts; use Load Teams for team issues.
+10. Record completed jobs with Technical Sign-off; an authorized approver
+    approves them to deduct stock from the chosen source.
+11. In Administration > Backups, create a backup. Copy the ENTIRE data/backups
+    folder to a separate drive regularly. Preserve the entire data/ folder
+    when upgrading versions (includes sign-off files and material photos).
+
+KEEP THE PROJECT EDITABLE:
+- server/ contains the Node.js API, database and frontend gateway.
+- public/ contains the interface (HTML/CSS/JavaScript).
+- test/ contains automated tests. Run 'npm test' from a terminal.
+- Save your modified source in Git or keep dated copies of the ZIP.
+- Future releases can be made from this source without an EXE installer.
+
+IMPORTANT:
+- This release is intended for one Windows host, accessed locally only.
+- Both services bind to 127.0.0.1; other PCs cannot access it by default.
+- Do not expose the backend or frontend ports directly to the Internet.
+- Back up data before each upgrade. A staged restore applies on next server restart.
+- CMD windows remain open after a process exits and show its error message.
+- Node.js must remain installed; the ZIP is not a standalone Windows EXE.
+- This release has not undergone full production security or load testing.
+
+VERSION 1.1 — ADMINISTRATOR ACTIONS
+- In Teams or Warehouses, use Edit or Delete on a row.
+- Unused default warehouses such as Quarantine can be deleted permanently.
+- Locations with stock or historical activity cannot be deleted; this protects your ledger.
+- Renaming preserves live stock quantities and active references. Historical movement entries keep their original location labels.

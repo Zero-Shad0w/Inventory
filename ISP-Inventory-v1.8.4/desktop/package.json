@@ -1,0 +1,65 @@
+{
+  "name": "isp-inventory-desktop",
+  "version": "1.8.4",
+  "private": true,
+  "description": "ISP Inventory desktop application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.ispinventory.desktop",
+    "productName": "ISP Inventory",
+    "directories": {
+      "output": "../installer-output"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "connection.html",
+      "connection.js",
+      "package.json",
+      "assets/company-icon.ico",
+      "assets/company-logo.png"
+    ],
+    "extraResources": [
+      {
+        "from": "../server",
+        "to": "inventory-app/server"
+      },
+      {
+        "from": "../public",
+        "to": "inventory-app/public"
+      },
+      {
+        "from": "../runtime/node.exe",
+        "to": "runtime/node.exe"
+      }
+    ],
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowElevation": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ISP Inventory",
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "assets/company-icon.ico",
+      "uninstallerIcon": "assets/company-icon.ico",
+      "installerHeaderIcon": "assets/company-icon.ico"
+    },
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "artifactName": "ISP-Inventory-Setup-${version}.${ext}",
+      "icon": "assets/company-icon.ico"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+ISP INVENTORY v1.6 - WINDOWS EXECUTABLE BUILD KIT
+
+This package is NOT a precompiled .exe. It contains a Windows build script that produces a genuine ISP-Inventory.exe and bundles the Node.js runtime. Building requires a Windows computer with Node.js 22.5+ installed and Windows PowerShell 5.1.
+
+1. Extract the ZIP on Windows.
+2. Right-click BUILD-WINDOWS-EXE.ps1 -> Run with PowerShell.
+   If scripts are blocked, open PowerShell in the extracted folder and run:
+   powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\BUILD-WINDOWS-EXE.ps1
+3. The output is in dist\ISP-Inventory.exe.
+4. Copy the ENTIRE dist folder to another Windows PC. It contains ISP-Inventory.exe, node.exe, server and public. No separate Node.js installation is needed on the destination PC.
+5. Double-click ISP-Inventory.exe to start the app in your default browser. Leave the app's message window open; click OK to stop the servers.
+
+IMPORTANT DATA MIGRATION
+This executable uses %LOCALAPPDATA%\ISP-Inventory\data for its database, photos, and backups. BEFORE first launch, copy your existing 'data' folder from the previous installation to that exact folder. Back up the original first. Do not overwrite or discard it.
+
+NOTES
+- The EXE is a launcher, not a single-file self-contained binary; distribute the entire dist folder.
+- It uses localhost ports 3000 and 3001. They must be free.
+- The EXE is not code-signed and may trigger SmartScreen warnings.
+- It has not been built or run on Windows in this environment; Windows verification is required.
+- Future upgrades should replace app files without deleting %LOCALAPPDATA%\ISP-Inventory\data.
