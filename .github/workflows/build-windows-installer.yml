@@ -1,0 +1,53 @@
+name: Build ISP Inventory Windows Installer
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ISP-Inventory-1.8.4.zip'
+      - '.github/workflows/build-windows-installer.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  windows-installer:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check that the v1.8.4 source ZIP was uploaded
+        shell: pwsh
+        run: |
+          if (!(Test-Path 'ISP-Inventory-1.8.4.zip')) {
+            throw 'Upload ISP-Inventory-1.8.4.zip to the repository root before running this workflow.'
+          }
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Extract source package
+        shell: pwsh
+        run: |
+          Expand-Archive -LiteralPath 'ISP-Inventory-1.8.4.zip' -DestinationPath 'build-source' -Force
+          if (!(Test-Path 'build-source/ISP-Inventory-v1.8.4/BUILD-ONE-CLICK-INSTALLER.ps1')) {
+            throw 'ZIP must contain ISP-Inventory-v1.8.4/BUILD-ONE-CLICK-INSTALLER.ps1'
+          }
+
+      - name: Build Windows installer
+        shell: pwsh
+        run: |
+          Set-Location 'build-source/ISP-Inventory-v1.8.4'
+          ./BUILD-ONE-CLICK-INSTALLER.ps1
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ISP-Inventory-v1.8.4-Windows-Installer
+          path: build-source/ISP-Inventory-v1.8.4/installer-output/*Setup*.exe
+          if-no-files-found: error
+          retention-days: 30
