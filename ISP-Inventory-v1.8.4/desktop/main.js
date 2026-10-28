@@ -1,5 +1,5 @@
 'use strict';
-const {app,BrowserWindow,dialog,Menu,shell,ipcMain}=require('electron');
+const {app,BrowserWindow,dialog,Menu,shell,ipcMain,safeStorage}=require('electron');
 const {spawn}=require('node:child_process');
 const fs=require('node:fs'),path=require('node:path'),net=require('node:net'),http=require('node:http'),https=require('node:https');
 let backend=null,mainWindow=null,connectionWindow=null,stopping=false,activeUrl='';
@@ -59,6 +59,37 @@ ipcMain.handle('connection:save',async(event,input)=>{
  const tmp=configPath+'.tmp';fs.writeFileSync(tmp,JSON.stringify(c,null,2),{mode:0o600});fs.renameSync(tmp,configPath);
  dialog.showMessageBoxSync(connectionWindow,{type:'info',title:'Database mode saved',message:'The application will restart to switch database mode.',buttons:['OK']});
  app.relaunch();app.quit();return {ok:true};
+});
+// Credentials are encrypted with Electron safeStorage (Windows DPAPI) and scoped to the selected server.
+const credentialsPath=path.join(app.getPath('userData'),'saved-login.json');
+function credentialSender(event){if(event.sender!==mainWindow?.webContents||!activeUrl)throw Error('Login storage is available only in the main application window');}
+ipcMain.handle('credentials:get',async event=>{
+ credentialSender(event);
+ if(!safeStorage.isEncryptionAvailable())return {supported:false};
+ try{
+  const record=JSON.parse(fs.readFileSync(credentialsPath,'utf8'));
+  if(record.origin!==activeUrl)return {supported:true};
+  const decrypted=safeStorage.decryptString(Buffer.from(record.encrypted,'base64'));
+  const saved=JSON.parse(decrypted);
+  return {supported:true,username:saved.username,password:saved.password};
+ }catch{return {supported:true};}
+});
+ipcMain.handle('credentials:save',async(event,input)=>{
+ credentialSender(event);
+ if(!safeStorage.isEncryptionAvailable())throw Error('Secure password storage is unavailable on this computer');
+ const username=String(input?.username||''),password=String(input?.password||'');
+ if(!username||!password||username.length>100||password.length>1024)throw Error('Invalid saved credentials');
+ const encrypted=safeStorage.encryptString(JSON.stringify({username,password})).toString('base64');
+ fs.mkdirSync(path.dirname(credentialsPath),{recursive:true});
+ const tmp=credentialsPath+'.tmp';
+ fs.writeFileSync(tmp,JSON.stringify({origin:activeUrl,encrypted}),{mode:0o600});
+ fs.renameSync(tmp,credentialsPath);
+ return {ok:true};
+});
+ipcMain.handle('credentials:clear',async event=>{
+ credentialSender(event);
+ try{fs.rmSync(credentialsPath,{force:true})}catch{}
+ return {ok:true};
 });
 async function start(){
  fs.mkdirSync(dataDir,{recursive:true});
