@@ -298,7 +298,7 @@ async function init(){
    const row=document.createElement('label');
    row.style.cssText='display:flex;align-items:center;gap:9px;margin:12px 0;cursor:pointer';
    row.innerHTML='<input type="checkbox" id="remember-login" style="width:auto"> Remember username and password on this computer';
-   f.insertBefore(row,submit);
+   f.insertBefore(row,submit.parentElement);
    remember=row.querySelector('input');
    try{
     const saved=await desktop.getSavedLogin();
