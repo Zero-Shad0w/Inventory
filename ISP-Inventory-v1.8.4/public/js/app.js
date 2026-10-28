@@ -215,13 +215,13 @@ if(active==='Devices'||active==='Customer Returns'){
 }
 if(active==='Users'){
  const [users,teams]=await Promise.all([api('users'),api('data/teams')]);
- c.innerHTML=`<div class="panel"><h2>Create user and link to field team</h2><p class="muted">Accounts are created in the database currently connected to this app. To use them on another computer, connect that computer to the same shared server. Viewer / Auditor accounts require a linked team.</p><form id="new-user"><div class="fields"><label>Username<input name="username" required></label><label>Password (12+ characters)<input type="password" name="password" minlength="12" required></label><label>Role<select name="role">${['Warehouse Operator','Warehouse Manager','Field Team Leader','Viewer / Auditor','Administrator'].map(r=>`<option>${esc(r)}</option>`).join('')}</select></label><label>Linked team<select name="team_id"><option value="">No team</option>${teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select></label></div><button>Create account</button></form></div>
+ c.innerHTML=`<div class="panel"><h2>Create user and link to field team</h2><p class="muted">Accounts are created in the database currently connected to this app. To use them on another computer, connect that computer to the same shared server. Viewer / Auditor accounts require a linked team.</p><form id="new-user"><div class="fields"><label>Username<input name="username" required></label><label>Password (6+ characters)<input type="password" name="password" minlength="6" required></label><label>Role<select name="role">${['Warehouse Operator','Warehouse Manager','Field Team Leader','Viewer / Auditor','Administrator'].map(r=>`<option>${esc(r)}</option>`).join('')}</select></label><label>Linked team<select name="team_id"><option value="">No team</option>${teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select></label></div><button>Create account</button></form></div>
  <div class="panel"><h2>User accounts and profile pictures</h2><p class="muted">Upload a PNG, JPG or WebP profile picture (up to 10 MB) for each account. The user's photo appears in the circular profile badge beside their name throughout the dashboard.</p><div class="user-photo-list">${users.map(u=>`<div class="user-photo-row"><span class="user-avatar">${u.avatar_path?`<img src="/api/users/${u.id}/avatar?v=${encodeURIComponent(u.avatar_path)}" alt="${esc(u.username)}">`:esc(u.username.slice(0,1).toUpperCase())}</span><div><strong>${esc(u.username)}</strong><small>${esc(u.role)} · ${u.active?'Active':'Disabled'}</small></div><label class="photo-upload-label">Upload photo<input type="file" accept="image/png,image/jpeg,image/webp" data-avatar-id="${u.id}"></label><button type="button" class="secondary reset-user-password" data-id="${u.id}" data-name="${esc(u.username)}">Reset password</button><button type="button" class="secondary toggle-user" data-id="${u.id}" data-active="${u.active?'0':'1'}">${u.active?'Disable':'Enable'}</button>${u.id===me.id?'':`<button type="button" class="secondary delete-user" data-id="${u.id}" data-name="${esc(u.username)}">Delete</button>`}</div>`).join('')}</div>
  <h3>Change linked team</h3><form id="team-user"><div class="fields"><label>User<select name="id">${users.map(x=>`<option value="${x.id}">${esc(x.username)} (${esc(x.role)})</option>`).join('')}</select></label><label>Team<select name="team_id"><option value="">Unlink team</option>${teams.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}</select></label></div><button>Save team link</button></form></div>`;
  for(const [id,url] of [['new-user','users'],['team-user','users/update']])$('#'+id).onsubmit=async e=>{e.preventDefault();try{await api(url,'POST',Object.fromEntries(new FormData(e.target)));await render()}catch(err){alert(err.message)}};
  document.querySelectorAll('.delete-user').forEach(btn=>btn.onclick=async()=>{if(!confirm(`Delete user "${btn.dataset.name}"? This revokes access immediately and preserves inventory history.`))return;try{await api('users/'+btn.dataset.id,'DELETE');await render()}catch(err){alert(err.message)}});
  document.querySelectorAll('.toggle-user').forEach(btn=>btn.onclick=async()=>{try{await api('users/update','POST',{id:Number(btn.dataset.id),active:Number(btn.dataset.active)});await render()}catch(err){alert(err.message)}});
- document.querySelectorAll('.reset-user-password').forEach(btn=>btn.onclick=async()=>{const password=prompt(`Enter a NEW password (12+ characters) for ${btn.dataset.name}:`);if(password===null)return;if(password.length<12)return alert('Password must have at least 12 characters');if(!confirm(`Reset password for ${btn.dataset.name}? All their existing sessions will be signed out.`))return;try{await api('users/'+btn.dataset.id+'/password','POST',{password});alert('Password reset. The user can now sign in with the new password.')}catch(err){alert(err.message)}});
+ document.querySelectorAll('.reset-user-password').forEach(btn=>btn.onclick=async()=>{const password=prompt(`Enter a NEW password (6+ characters) for ${btn.dataset.name}:`);if(password===null)return;if(password.length<6)return alert('Password must have at least 6 characters');if(!confirm(`Reset password for ${btn.dataset.name}? All their existing sessions will be signed out.`))return;try{await api('users/'+btn.dataset.id+'/password','POST',{password});alert('Password reset. The user can now sign in with the new password.')}catch(err){alert(err.message)}});
  document.querySelectorAll('[data-avatar-id]').forEach(input=>input.onchange=async()=>{try{await uploadAvatar(input.dataset.avatarId,input.files[0]);me=await api('me');shell();await render()}catch(err){alert(err.message)}});return;
 }
 if(active==='Audit Log'){c.innerHTML=`<div class="panel">${table(await api('audit'))}</div>`;return;}
@@ -292,7 +292,32 @@ async function init(){
   const id=setup?'setup':'login';
   app.innerHTML=`<div class="panel auth"><h1>${setup?'First-run administrator setup':'ISP Inventory login'}</h1><p class="muted">${setup?'Create administrator credentials (12+ character password).':'Use an account from the selected database. Local and shared databases have separate user accounts.'}</p>${form(id,['username','password'],setup?'Create administrator':'Sign in')}<p id="auth-error" role="alert" aria-live="polite" style="color:#ff8c96;min-height:1.5em"></p></div>`;
   const f=$('#'+id),submit=f.querySelector('button'),error=$('#auth-error');
-  f.onsubmit=async e=>{e.preventDefault();submit.disabled=true;error.textContent='';try{await api(id,'POST',Object.fromEntries(new FormData(f)));me=null;await init()}catch(err){error.textContent=err.message;f.querySelector('input[name=password]').value='';f.querySelector('input[name=password]').focus()}finally{submit.disabled=false}};
+  const desktop=window.inventoryDesktop;
+  let remember=null;
+  if(!setup&&desktop?.getSavedLogin){
+   const row=document.createElement('label');
+   row.style.cssText='display:flex;align-items:center;gap:9px;margin:12px 0;cursor:pointer';
+   row.innerHTML='<input type="checkbox" id="remember-login" style="width:auto"> Remember username and password on this computer';
+   f.insertBefore(row,submit);
+   remember=row.querySelector('input');
+   try{
+    const saved=await desktop.getSavedLogin();
+    if(!saved?.supported){row.remove();remember=null}
+    else if(saved.username&&saved.password){
+     f.elements.username.value=saved.username;
+     f.elements.password.value=saved.password;
+     remember.checked=true;
+    }
+   }catch{row.remove();remember=null}
+  }
+  f.onsubmit=async e=>{e.preventDefault();submit.disabled=true;error.textContent='';const credentials={username:f.elements.username.value,password:f.elements.password.value};try{
+    await api(id,'POST',Object.fromEntries(new FormData(f)));
+    if(!setup&&remember){
+     try{if(remember.checked)await desktop.saveLogin(credentials);else await desktop.clearSavedLogin()}
+     catch(storageError){alert('Signed in, but could not save credentials: '+storageError.message)}
+    }
+    me=null;await init();
+   }catch(err){error.textContent=err.message;f.querySelector('input[name=password]').value='';f.querySelector('input[name=password]').focus()}finally{submit.disabled=false}};
   return;
  }
  await loadBranding();shell();render();
