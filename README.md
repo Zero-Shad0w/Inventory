@@ -15,7 +15,7 @@
 ![Database](https://img.shields.io/badge/Database-SQLite-222838?style=for-the-badge)
 ![Stack](https://img.shields.io/badge/Stack-Node.js%20%2B%20Electron-222838?style=for-the-badge)
 
-[**Download v2.0 Source ZIP**](./ISP-Inventory-v2.0.zip) · [**Previous v1.8.4 Source**](./ISP-Inventory-v1.8.4) · [**Report an Issue**](https://github.com/Zero-Shad0w/Inventory/issues)
+[**Download v2.0 Source ZIP**](./ISP-Inventory-v2.0.zip) · [**Previous v1.8.4 Source**](./OLDER%20Version/ISP-Inventory-v1.8.4) · [**Report an Issue**](https://github.com/Zero-Shad0w/Inventory/issues)
 
 </div>
 
@@ -67,7 +67,7 @@ The v2.0 ZIP is a test/source package. Test the Windows build and sign-in behavi
 - **Local/shared connection controls:** configure the local application port or enter a shared server IP/hostname and port separately. Server listening-port changes require a restart.
 - **Custom S.ico:** retained for the Windows application, installer, and shortcuts.
 
-See the [v1.8.4 changelog](./ISP-Inventory-v1.8.4/CHANGELOG.md) for details.
+See the [v1.8.4 changelog](./OLDER%20Version/ISP-Inventory-v1.8.4/CHANGELOG.md) for details.
 
 ## 📊 Version comparison
 
@@ -117,6 +117,10 @@ Do not commit customer data, passwords, production databases, backup files or se
 The repository contains the [v2.0 build-kit ZIP](./ISP-Inventory-v2.0.zip). The existing [GitHub Actions workflow](./.github/workflows/build-windows-installer.yml) still targets the older v1.8.4 source tree and **does not build v2.0 automatically**. Use the v2.0 package's included build script on Windows, or update the workflow before attempting a v2.0 CI build.
 
 **A successful Windows installer build has not been independently verified here.**
+
+## 📁 Previous versions
+
+Older source archives and the v1.8.4 source tree are grouped in [**OLDER Version**](./OLDER%20Version/). The current [v2.0 ZIP](./ISP-Inventory-v2.0.zip) remains in the repository root.
 
 ## 🧭 Roadmap
 
