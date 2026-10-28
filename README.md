@@ -71,6 +71,12 @@ See the [v1.8.4 changelog](./ISP-Inventory-v1.8.4/CHANGELOG.md) for details.
 
 The v1.8.4 column reflects the published source and changelog. It does not imply independent Windows runtime verification.
 
+## 🔑 Latest login improvements (updated source)
+
+- **Remember username and password:** Optional checkbox on the Electron desktop login screen. Saved credentials use Electron's encrypted safeStorage on Windows and are associated with the selected local/shared database connection. Passwords are not stored in plain text.
+- **Minimum password length: 6 characters:** Applies to first-run administrator setup, creating users and resetting passwords. Longer unique passwords remain recommended.
+- These improvements are in the [editable v1.8.4 source folder](./ISP-Inventory-v1.8.4), **not** the previously uploaded `ISP-Inventory-1.8.4.zip` snapshot. The [Windows build workflow](./.github/workflows/build-windows-installer.yml) now uses the latest source folder. Check for a successful workflow artifact before downloading an EXE.
+
 ## 🚀 Getting started on Windows
 
 1. **Download** [ISP-Inventory-1.8.4.zip](./ISP-Inventory-1.8.4.zip).
