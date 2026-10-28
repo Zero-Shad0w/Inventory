@@ -10,12 +10,12 @@
 
 *Illustrative dark UI concept — not an application screenshot. Sample values are fictional.*
 
-![Current](https://img.shields.io/badge/Current-v1.8.4-ea3355?style=for-the-badge)
+![Current](https://img.shields.io/badge/Current-v2.0-ea3355?style=for-the-badge)
 ![Platform](https://img.shields.io/badge/Platform-Windows-222838?style=for-the-badge)
 ![Database](https://img.shields.io/badge/Database-SQLite-222838?style=for-the-badge)
 ![Stack](https://img.shields.io/badge/Stack-Node.js%20%2B%20Electron-222838?style=for-the-badge)
 
-[**Download v1.8.4 Source ZIP**](./ISP-Inventory-1.8.4.zip) · [**Browse v1.8.4 Source**](./ISP-Inventory-v1.8.4) · [**Report an Issue**](https://github.com/Zero-Shad0w/Inventory/issues)
+[**Download v2.0 Source ZIP**](./ISP-Inventory-v2.0.zip) · [**Previous v1.8.4 Source**](./ISP-Inventory-v1.8.4) · [**Report an Issue**](https://github.com/Zero-Shad0w/Inventory/issues)
 
 </div>
 
@@ -25,7 +25,7 @@
 
 ISP Inventory brings warehouse stock, technician allocations, customer equipment returns and operational records into one system. It is designed for ISP workflows involving **fiber optic, coaxial and network equipment**.
 
-> **Release status:** v1.8.4 source ZIP and editable project files are published. This is an **installer build kit**, not a precompiled Windows EXE. Windows installer compilation and manual Windows UI testing have not been verified.
+> **Release status:** The v2.0 source/build-kit ZIP is published. It is **not** a verified, precompiled Windows EXE. The older versions remain available for reference.
 
 ## ✨ Core features
 
@@ -43,11 +43,24 @@ ISP Inventory brings warehouse stock, technician allocations, customer equipment
 
 Actual availability and behavior depend on the downloaded release; consult its included documentation.
 
+## 🖥️ Screenshots
+
+The dashboard and appearance-settings screenshots supplied by the project owner will be displayed here when their standalone PNG files are committed under `docs/images/`. The illustration above is currently a design concept, not an actual screenshot.
+
 ## 🖥️ Interface preview
 
 The image above is a **design illustration**, not a capture of the running application. A real dashboard screenshot will be added after the Windows build and UI are verified. This avoids presenting fictional inventory counts or an untested layout as actual software output.
 
-## 🆕 What's new in v1.8.4
+## 🆕 What's new in v2.0
+
+- **Remember login** option on the Windows desktop login screen, using encrypted local credential storage where available.
+- **One-character minimum** for usernames and passwords, as requested for testing. **Warning:** one-character passwords are unsafe for real or shared-network deployments.
+- **Custom installation directory** option in the Windows installer configuration.
+- Preserves inventory, team operations, database connectivity and existing customization features from earlier versions.
+
+The v2.0 ZIP is a test/source package. Test the Windows build and sign-in behavior before production use.
+
+## Changes introduced in v1.8.4
 
 - **Administrator user controls:** delete (deactivate and revoke access), disable/enable accounts, and reset passwords. Historical stock movements and audit references remain intact.
 - **Login fixes:** errors display inline and users can retry immediately without restarting the application.
@@ -58,28 +71,25 @@ See the [v1.8.4 changelog](./ISP-Inventory-v1.8.4/CHANGELOG.md) for details.
 
 ## 📊 Version comparison
 
-| Capability | v1.8.3 (previous) | v1.8.4 (current source) |
+| Capability | v1.8.4 | v2.0 (source ZIP) |
 | :-- | :--: | :--: |
 | Inventory and materials management | ✅ | ✅ |
 | Team stock allocation and returns | ✅ | ✅ |
 | Local / shared database connection | ✅ | ✅ |
 | Custom red S icon | ✅ | ✅ |
 | Separate connection port controls | ✅ | ✅ |
-| Admin disable/delete user and password reset | — | ✅ Documented |
-| Improved login retry/error feedback | — | ✅ Documented |
-| Automated Windows installer build | — | Workflow present; EXE not verified |
+| Admin disable/delete user and password reset | ✅ Documented | ✅ Included |
+| Improved login retry/error feedback | ✅ Documented | ✅ Included |
+| Remember username/password | Updated source | Included in test package |
+| Password minimum | 6 in updated source | 1 character |
+| Choose installer folder | Not verified | Configured in test package |
+| Windows installer | Not verified | Build required |
 
-The v1.8.4 column reflects the published source and changelog. It does not imply independent Windows runtime verification.
-
-## 🔑 Latest login improvements (updated source)
-
-- **Remember username and password:** Optional checkbox on the Electron desktop login screen. Saved credentials use Electron's encrypted safeStorage on Windows and are associated with the selected local/shared database connection. Passwords are not stored in plain text.
-- **Minimum password length: 6 characters:** Applies to first-run administrator setup, creating users and resetting passwords. Longer unique passwords remain recommended.
-- These improvements are in the [editable v1.8.4 source folder](./ISP-Inventory-v1.8.4), **not** the previously uploaded `ISP-Inventory-1.8.4.zip` snapshot. The [Windows build workflow](./.github/workflows/build-windows-installer.yml) now uses the latest source folder. Check for a successful workflow artifact before downloading an EXE.
+The table reflects published source/build-kit descriptions, not independent Windows runtime verification.
 
 ## 🚀 Getting started on Windows
 
-1. **Download** [ISP-Inventory-1.8.4.zip](./ISP-Inventory-1.8.4.zip).
+1. **Download** [ISP-Inventory-v2.0.zip](./ISP-Inventory-v2.0.zip).
 2. **Extract** the ZIP to a writable location.
 3. **Read** the build and network instructions inside the extracted package.
 4. On a Windows build computer with Node.js 22.5+ and internet access, run `powershell -ExecutionPolicy Bypass -File .\\BUILD-ONE-CLICK-INSTALLER.ps1` from the extracted project folder. The ZIP is editable source/build material, **not** a precompiled EXE.
@@ -104,16 +114,16 @@ Do not commit customer data, passwords, production databases, backup files or se
 
 ## 🏗️ Windows EXE build status
 
-The repository contains the [v1.8.4 source ZIP](./ISP-Inventory-1.8.4.zip) and a [GitHub Actions installer workflow](./.github/workflows/build-windows-installer.yml). A successful workflow run should publish its Windows installer under **Actions → Artifacts**. Check the workflow run logs and artifact availability before assuming an EXE was built successfully.
+The repository contains the [v2.0 build-kit ZIP](./ISP-Inventory-v2.0.zip). The existing [GitHub Actions workflow](./.github/workflows/build-windows-installer.yml) still targets the older v1.8.4 source tree and **does not build v2.0 automatically**. Use the v2.0 package's included build script on Windows, or update the workflow before attempting a v2.0 CI build.
 
 **A successful Windows installer build has not been independently verified here.**
 
 ## 🧭 Roadmap
 
-- Validate the published v1.8.4 source package
+- Validate the published v2.0 source package
 - Test user management, login and port settings on Windows
 - Build and verify the installer using GitHub Actions
-- Add genuine application screenshots from a clean demo database
+- Publish the supplied genuine dashboard and settings screenshots as standalone PNG assets
 - Improve release documentation and versioned changelogs
 
 ---
