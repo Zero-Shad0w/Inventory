@@ -1,3 +1,9 @@
+## Unreleased changes on v1.8.4 source branch (after published ZIP)
+- Added **Remember username and password on this computer** checkbox to the Electron desktop sign-in screen. Opt-in credentials are encrypted using Electron safeStorage (Windows DPAPI), not saved as plain text. Credentials are scoped to the selected local/shared server and can be cleared by unchecking the option on the next sign-in.
+- Password minimum reduced from 12 to **6 characters** for first-run administrator setup, new users and administrator password resets, with server-side enforcement.
+- GitHub Actions now builds the installer from the editable source folder, so source updates are included without rebuilding the older source ZIP first.
+- **Important:** the existing `ISP-Inventory-1.8.4.zip` is an earlier snapshot and does not include these changes. Use the source folder or a new successful GitHub Actions installer artifact.
+
 ## v1.8.4 — User administration and sign-in fixes
 - Administrator can delete users safely (deactivates account, revokes sessions, hides user from management while retaining ledger and audit history).
 - Administrator can disable/enable users and reset passwords, revoking existing sessions.
