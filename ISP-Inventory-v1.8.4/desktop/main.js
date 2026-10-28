@@ -68,7 +68,7 @@ ipcMain.handle('credentials:get',async event=>{
  if(!safeStorage.isEncryptionAvailable())return {supported:false};
  try{
   const record=JSON.parse(fs.readFileSync(credentialsPath,'utf8'));
-  if(record.origin!==activeUrl)return {supported:true};
+  if(record.origin!==(loadConnection().mode==='local'?'local':activeUrl))return {supported:true};
   const decrypted=safeStorage.decryptString(Buffer.from(record.encrypted,'base64'));
   const saved=JSON.parse(decrypted);
   return {supported:true,username:saved.username,password:saved.password};
@@ -82,7 +82,7 @@ ipcMain.handle('credentials:save',async(event,input)=>{
  const encrypted=safeStorage.encryptString(JSON.stringify({username,password})).toString('base64');
  fs.mkdirSync(path.dirname(credentialsPath),{recursive:true});
  const tmp=credentialsPath+'.tmp';
- fs.writeFileSync(tmp,JSON.stringify({origin:activeUrl,encrypted}),{mode:0o600});
+ fs.writeFileSync(tmp,JSON.stringify({origin:loadConnection().mode==='local'?'local':activeUrl,encrypted}),{mode:0o600});
  fs.renameSync(tmp,credentialsPath);
  return {ok:true};
 });
