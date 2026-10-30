@@ -6,7 +6,6 @@
 
 **Dark-themed inventory and operations management for Internet Service Providers**
 
-![ISP Inventory dashboard concept](docs/images/dashboard-concept.svg)
 ![ISP Inventory dashboard concept](docs/images/screen.png)
 ![ISP Inventory dashboard concept](docs/images/screeen.png)
 
